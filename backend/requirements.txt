@@ -1,0 +1,10 @@
+fastapi
+uvicorn[standard]
+pydantic
+python-multipart
+httpx
+openai
+python-dotenv
+Pillow
+
+pydantic-settings
