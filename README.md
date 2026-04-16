@@ -52,6 +52,15 @@ Puis relancer `./deploy/k8s/deploy.sh` (ou `sudo ./deploy/k8s/deploy.sh` en dép
 ./deploy/tools/install_menu.sh
 ```
 
+## Scripts de test API (rapides)
+```bash
+# test /health
+./deploy/tests/test_health.sh
+
+# test /analyze-bird (image obligatoire)
+./deploy/tests/test_analyze_bird.sh --image /chemin/vers/image.jpg
+```
+
 ## Mise à jour repo sans blocage de `git pull`
 ```bash
 # mode sûr: stash auto + pull fast-forward + restore stash
