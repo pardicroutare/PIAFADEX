@@ -1,0 +1,4 @@
+Réponds uniquement avec l’un des 2 formats JSON stricts suivants :
+- result_type = bird_identified
+- result_type = image_unusable
+Respecte les champs et types attendus, et fournis exactement 3 alternatives en cas bird_identified.
