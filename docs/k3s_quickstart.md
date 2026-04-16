@@ -37,3 +37,18 @@ curl http://127.0.0.1:8000/health
 - L'Ingress utilise `piafadex.local` et `traefik` (par défaut sur K3s). Adapte l'hôte si besoin.
 - Les fichiers temporaires backend sont stockés dans un volume `emptyDir` (`/tmp/piafadex`) non persistant.
 - Pour mettre à jour le backend, relance simplement `./deploy/k8s/deploy.sh`.
+
+
+## Commande ON/OFF
+```bash
+./deploy/tools/status_app.sh
+```
+
+## Menu serveur interactif
+```bash
+# lancer à la demande
+./deploy/tools/piafadex_menu.sh
+
+# ou l'installer au login bash
+./deploy/tools/install_menu.sh
+```

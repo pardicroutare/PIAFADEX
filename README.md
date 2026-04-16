@@ -30,3 +30,16 @@ uvicorn app.main:app --reload
 
 Déploiement direct possible : `./deploy/k8s/deploy.sh`.
 Guide détaillé: `docs/k3s_quickstart.md`.
+
+
+## Outils serveur (ON/OFF + menu)
+```bash
+# statut simple application
+./deploy/tools/status_app.sh
+
+# menu interactif
+./deploy/tools/piafadex_menu.sh
+
+# installation auto du menu à la connexion bash
+./deploy/tools/install_menu.sh
+```
