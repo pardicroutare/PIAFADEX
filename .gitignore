@@ -2,3 +2,6 @@ __pycache__/
 *.pyc
 backend/.venv/
 deploy/k8s/secret.env
+
+__pycache__/
+*.pyc
