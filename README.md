@@ -51,3 +51,12 @@ Puis relancer `./deploy/k8s/deploy.sh` (ou `sudo ./deploy/k8s/deploy.sh` en dép
 # installation auto du menu à la connexion bash
 ./deploy/tools/install_menu.sh
 ```
+
+## Mise à jour repo sans blocage de `git pull`
+```bash
+# mode sûr: stash auto + pull fast-forward + restore stash
+./deploy/tools/sync_main.sh
+
+# mode forcé: écrase toutes modifs locales pour coller à origin/main
+./deploy/tools/sync_main.sh --hard
+```

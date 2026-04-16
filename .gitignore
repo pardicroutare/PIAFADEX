@@ -2,6 +2,9 @@ __pycache__/
 *.pyc
 backend/.venv/
 deploy/k8s/secret.env
+test.jpg
+test_audio.mp3
+Huppe_fasciée
 
 __pycache__/
 *.pyc
