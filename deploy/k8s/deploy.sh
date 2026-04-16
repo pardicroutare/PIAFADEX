@@ -17,6 +17,7 @@ require_cmd() {
 
 require_cmd kubectl
 require_cmd python3
+require_cmd sudo
 
 if ! command -v docker >/dev/null 2>&1 && ! command -v nerdctl >/dev/null 2>&1; then
   echo "Installe Docker ou nerdctl pour builder l'image locale." >&2
@@ -68,18 +69,28 @@ if command -v docker >/dev/null 2>&1; then
   TMP_TAR="$(mktemp /tmp/piafadex-image-XXXXXX.tar)"
   ${DOCKER_RUNNER} save "${IMAGE_NAME}" -o "${TMP_TAR}"
   ${K3S_CTR_RUNNER} images import "${TMP_TAR}"
+echo "[1/5] Build image ${IMAGE_NAME}"
+if command -v docker >/dev/null 2>&1; then
+  docker build -t "${IMAGE_NAME}" "${ROOT_DIR}/backend"
+
+  echo "[2/5] Import image dans containerd k3s"
+  TMP_TAR="$(mktemp /tmp/piafadex-image-XXXXXX.tar)"
+  docker save "${IMAGE_NAME}" -o "${TMP_TAR}"
+  sudo k3s ctr images import "${TMP_TAR}"
   rm -f "${TMP_TAR}"
 else
   nerdctl --namespace k8s.io build -t "${IMAGE_NAME}" "${ROOT_DIR}/backend"
 fi
 
 echo "[4/6] Namespace et secret"
+echo "[3/5] Namespace et secret"
 kubectl apply -f "${ROOT_DIR}/deploy/k8s/namespace.yaml"
 kubectl -n "${NAMESPACE}" create secret generic piafadex-secrets \
   --from-env-file="${SECRET_FILE}" \
   --dry-run=client -o yaml | kubectl apply -f -
 
 echo "[5/6] Déploiement Kubernetes"
+echo "[4/5] Déploiement Kubernetes"
 kubectl apply -f "${ROOT_DIR}/deploy/k8s/configmap.yaml"
 kubectl apply -f "${ROOT_DIR}/deploy/k8s/deployment.yaml"
 kubectl apply -f "${ROOT_DIR}/deploy/k8s/service.yaml"
@@ -88,6 +99,8 @@ kubectl apply -f "${ROOT_DIR}/deploy/k8s/ingress.yaml"
 kubectl -n "${NAMESPACE}" rollout restart deployment/piafadex-backend >/dev/null
 
 echo "[6/6] Vérification"
+
+echo "[5/5] Vérification"
 kubectl -n "${NAMESPACE}" rollout status deployment/piafadex-backend
 kubectl -n "${NAMESPACE}" get pods,svc,ingress
 

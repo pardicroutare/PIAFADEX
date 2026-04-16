@@ -17,6 +17,14 @@ class PiafadexApp extends StatelessWidget {
       theme: PiafadexTheme.build(),
       initialRoute: PiafadexRouter.home,
       onGenerateRoute: PiafadexRouter.onGenerateRoute,
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFC43B2B)),
+      ),
+      home: const Scaffold(
+        body: Center(
+          child: Text('PIAFADEX — Le Pokédex des oiseaux'),
+        ),
+      ),
     );
   }
 }
