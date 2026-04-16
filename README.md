@@ -31,6 +31,14 @@ uvicorn app.main:app --reload
 Déploiement direct possible : `./deploy/k8s/deploy.sh`.
 Guide détaillé: `docs/k3s_quickstart.md`.
 
+Si Docker renvoie `permission denied` sur `/var/run/docker.sock`:
+```bash
+sudo usermod -aG docker "$USER"
+newgrp docker
+docker info
+```
+Puis relancer `./deploy/k8s/deploy.sh` (ou `sudo ./deploy/k8s/deploy.sh` en dépannage immédiat).
+
 
 ## Outils serveur (ON/OFF + menu)
 ```bash

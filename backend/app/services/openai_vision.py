@@ -1,6 +1,7 @@
 import base64
 import json
 
+from openai import APIConnectionError, APITimeoutError, BadRequestError, OpenAI
 from openai import APIConnectionError, APITimeoutError, OpenAI
 from pydantic import ValidationError
 
@@ -22,6 +23,10 @@ class UpstreamTimeoutError(Exception):
 
 
 class UpstreamUnavailableError(Exception):
+    pass
+
+
+class UpstreamRequestError(Exception):
     pass
 
 
@@ -99,6 +104,8 @@ def analyze_bird_image(image_bytes: bytes, mime_type: str) -> dict:
             raise UpstreamTimeoutError from exc
         except APIConnectionError as exc:
             raise UpstreamUnavailableError from exc
+        except BadRequestError as exc:
+            raise UpstreamRequestError(str(exc)) from exc
 
         parsed = json.loads(response.output_text)
         return validate_analyze_payload(parsed)

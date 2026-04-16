@@ -36,6 +36,26 @@ curl http://127.0.0.1:8000/health
 ## Notes
 - L'Ingress utilise `piafadex.local` et `traefik` (par défaut sur K3s). Adapte l'hôte si besoin.
 - Les fichiers temporaires backend sont stockés dans un volume `emptyDir` (`/tmp/piafadex`) non persistant.
+- Pour mettre à jour le backend, relance simplement `./deploy/k8s/deploy.sh` (le script force un `rollout restart` pour appliquer la nouvelle image locale).
+
+## Dépannage rapide
+- **`permission denied` sur Docker (`/var/run/docker.sock`)**
+  ```bash
+  sudo usermod -aG docker "$USER"
+  newgrp docker
+  docker info
+  ```
+  Puis relancer:
+  ```bash
+  ./deploy/k8s/deploy.sh
+  ```
+  > Alternative immédiate: `sudo ./deploy/k8s/deploy.sh`
+- **Deployment bloqué**
+  ```bash
+  kubectl -n piafadex get pods -l app=piafadex-backend -o wide
+  kubectl -n piafadex logs deploy/piafadex-backend --tail=200
+  kubectl -n piafadex logs deploy/piafadex-backend --previous --tail=200
+  ```
 - Pour mettre à jour le backend, relance simplement `./deploy/k8s/deploy.sh`.
 
 

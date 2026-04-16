@@ -6,6 +6,7 @@ from fastapi import APIRouter, File, Form, UploadFile
 from app.services.image_utils import ALLOWED_CONTENT_TYPES, MAX_FILE_SIZE_BYTES
 from app.services.openai_vision import (
     UpstreamInvalidJsonError,
+    UpstreamRequestError,
     UpstreamTimeoutError,
     UpstreamUnavailableError,
     analyze_bird_image,
@@ -48,6 +49,9 @@ async def analyze_bird(file: UploadFile = File(...), client_context: str | None 
         return error_response(504, "upstream_invalid_json", "Réponse upstream invalide.")
     except UpstreamTimeoutError:
         return error_response(504, "upstream_timeout", "Le fournisseur a dépassé le délai.")
+    except UpstreamRequestError:
+        logger.exception("Requête upstream invalide dans /analyze-bird")
+        return error_response(500, "internal_error", "Requête upstream invalide.")
     except UpstreamUnavailableError:
         return error_response(500, "internal_error", "Service OpenAI indisponible.")
     except Exception:

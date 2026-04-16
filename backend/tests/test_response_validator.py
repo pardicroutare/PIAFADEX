@@ -1,5 +1,6 @@
 import pytest
 
+from app.services.response_validator import analyze_json_schema, validate_analyze_payload
 from app.services.response_validator import validate_analyze_payload
 
 
@@ -43,3 +44,11 @@ def test_validate_payload_rejects_empty_after_trim():
 
     with pytest.raises(ValueError):
         validate_analyze_payload(payload)
+
+
+def test_analyze_json_schema_has_top_level_object():
+    schema = analyze_json_schema()
+
+    assert schema["type"] == "object"
+    assert schema["additionalProperties"] is False
+    assert "oneOf" in schema
