@@ -56,6 +56,7 @@ curl http://127.0.0.1:8000/health
   kubectl -n piafadex logs deploy/piafadex-backend --tail=200
   kubectl -n piafadex logs deploy/piafadex-backend --previous --tail=200
   ```
+- Pour mettre à jour le backend, relance simplement `./deploy/k8s/deploy.sh`.
 
 
 ## Commande ON/OFF

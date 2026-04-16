@@ -1,6 +1,7 @@
 import pytest
 
 from app.services.response_validator import analyze_json_schema, validate_analyze_payload
+from app.services.response_validator import validate_analyze_payload
 
 
 def test_validate_payload_normalizes_spaces():
